@@ -21,7 +21,8 @@ function getTop(cat) {
       const A = calc(a);
       const B = calc(b);
       if (A.points !== B.points) return B.points - A.points;
-      return A.time - B.time;
+      if (A.time !== B.time) return A.time - B.time;
+      return (a.name || "").localeCompare(b.name || "", "pl", {sensitivity: "base"});
     })
     .slice(0, 3);
 }
@@ -35,22 +36,39 @@ function renderPodium(containerId, categoryKey) {
   const el = document.getElementById(containerId);
   const list = getTop(categoryKey);
   const medals = ["🥇", "🥈", "🥉"];
+  const heights = ["220px", "180px", "145px"];
 
   if (!list.length) {
     el.innerHTML = `<div class="empty-card">Brak par w kategorii ${getCategoryName(categoryKey)}.</div>`;
     return;
   }
 
-  el.innerHTML = list.map((p, i) => {
-    const r = calc(p);
+  el.innerHTML = [0, 1, 2].map(i => {
+    const pair = list[i];
     const placeClass = i === 0 ? "first" : i === 1 ? "second" : "third";
 
+    if (!pair) {
+      return `
+        <article class="podium-column ${placeClass}">
+          <div class="podium-riser" style="--podium-height:${heights[i]}">
+            <div class="empty-card">Wolne miejsce</div>
+          </div>
+        </article>
+      `;
+    }
+
+    const r = calc(pair);
+
     return `
-      <article class="podium-card ${placeClass}">
-        <span class="medal">${medals[i]}</span>
-        <h3>${p.name}</h3>
-        <p class="score">${r.points} pkt</p>
-        <p class="time">${r.time} s</p>
+      <article class="podium-column ${placeClass}">
+        <div class="podium-riser" style="--podium-height:${heights[i]}">
+          <div class="podium-card ${placeClass}" style="--podium-height:${heights[i]}">
+            <span class="medal">${medals[i]}</span>
+            <h3>${pair.name}</h3>
+            <p class="score">${r.points} pkt</p>
+            <p class="time">${r.time} s</p>
+          </div>
+        </div>
       </article>
     `;
   }).join("");

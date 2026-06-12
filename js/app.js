@@ -22,7 +22,8 @@ function sortPairs(list) {
     const B = calc(b);
 
     if (A.points !== B.points) return B.points - A.points;
-    return A.time - B.time;
+    if (A.time !== B.time) return A.time - B.time;
+    return (a.name || "").localeCompare(b.name || "", "pl", {sensitivity: "base"});
   });
 }
 
@@ -167,7 +168,6 @@ function updatePairField(id, field, value) {
   if (field === "category") pair.category = value;
 
   saveData(data);
-  renderEditor();
   renderBoards();
 }
 
@@ -181,7 +181,6 @@ function updateStationValue(id, index, field, value) {
   pair.stations[index][field] = Number(value || 0);
 
   saveData(data);
-  renderEditor();
   renderBoards();
 }
 
