@@ -6,8 +6,8 @@ function calc(p) {
   let points = 0;
   let time = 0;
   (p.stations || []).forEach(s => {
-    points += Number(s.points || 0);
-    time += Number(s.time || 0);
+    points += parseNumericValue(s.points, false);
+    time += parseNumericValue(s.time, true);
   });
   return {points, time};
 }
@@ -66,7 +66,7 @@ function renderPodium(containerId, categoryKey) {
             <span class="medal">${medals[i]}</span>
             <h3>${pair.name}</h3>
             <p class="score">${r.points} pkt</p>
-            <p class="time">${r.time} s</p>
+            <p class="time">${formatTime(r.time)} s</p>
           </div>
         </div>
       </article>

@@ -9,8 +9,8 @@ function calc(pair) {
   let time = 0;
 
   (pair.stations || []).forEach(s => {
-    points += Number(s.points || 0);
-    time += Number(s.time || 0);
+    points += parseNumericValue(s.points, false);
+    time += parseNumericValue(s.time, true);
   });
 
   return {points, time};
@@ -47,7 +47,7 @@ function renderBoard(list, categoryKey) {
         </div>
         <div class="leader-stats">
           <span>${r.points} pkt</span>
-          <span>${r.time} s</span>
+          <span>${formatTime(r.time)} s</span>
         </div>
       </article>
     `;
@@ -66,7 +66,7 @@ function renderEditor() {
         <div class="pair-card-header">
           <div>
             <h3>${pair.name}</h3>
-            <p>${r.points} pkt • ${r.time} s</p>
+            <p>${r.points} pkt • ${formatTime(r.time)} s</p>
           </div>
           <button class="ghost-button" onclick="deletePair(${pair.id})">Usuń</button>
         </div>
@@ -91,7 +91,7 @@ function renderEditor() {
               <div class="station-input-label">Punkty</div>
               <input type="text" inputmode="numeric" pattern="[0-9]*" value="${station.points || 0}" data-role="station-points" data-id="${pair.id}" data-index="${index}" aria-label="Punkty dla stacji ${index + 1}">
               <div class="station-input-label">Czas</div>
-              <input type="text" inputmode="decimal" pattern="[0-9,.]*" value="${station.time || 0}" data-role="station-time" data-id="${pair.id}" data-index="${index}" aria-label="Czas dla stacji ${index + 1} w sekundach">
+              <input type="text" inputmode="decimal" pattern="[0-9.,-]*" step="0.001" value="${station.time || 0}" data-role="station-time" data-id="${pair.id}" data-index="${index}" aria-label="Czas dla stacji ${index + 1} w sekundach (obsługuje milisekundy)">
             </label>
           `).join("")}
         </div>
@@ -174,9 +174,11 @@ function updatePairField(id, field, value) {
 function normalizeNumericInput(value, allowDecimal) {
   const cleaned = String(value ?? "")
     .replace(/,/g, ".")
-    .replace(/[\D.-]/g, "");
+    .replace(/[^\d.-]/g, "");
 
-  if (!allowDecimal) return String(cleaned.replace(/\./g, ""));
+  if (!allowDecimal) {
+    return cleaned.replace(/\./g, "");
+  }
 
   const parts = cleaned.split(".");
   if (parts.length > 2) {
@@ -195,7 +197,7 @@ function updateStationValue(id, index, field, value) {
   if (!pair.stations[index]) pair.stations[index] = {points: 0, time: 0};
 
   const rawValue = normalizeNumericInput(value, field === "time");
-  pair.stations[index][field] = field === "time" ? Number(rawValue || 0) : Number(rawValue || 0);
+  pair.stations[index][field] = parseNumericValue(rawValue || 0, field === "time");
 
   saveData(data);
   renderBoards();

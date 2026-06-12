@@ -10,6 +10,45 @@ function defaultData() {
   };
 }
 
+function normalizeNumericInput(value, allowDecimal = true) {
+  const text = String(value ?? "")
+    .trim()
+    .replace(/,/g, ".")
+    .replace(/[^\d.-]/g, "");
+
+  if (!allowDecimal) {
+    return text.replace(/\./g, "");
+  }
+
+  const parts = text.split(".");
+  if (parts.length > 2) {
+    return `${parts[0]}.${parts.slice(1).join("")}`;
+  }
+
+  return text;
+}
+
+function parseNumericValue(value, allowDecimal = true) {
+  const cleaned = normalizeNumericInput(value, allowDecimal);
+
+  if (cleaned === "" || cleaned === "." || cleaned === "-") {
+    return 0;
+  }
+
+  const parsed = Number(cleaned);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function formatTime(value) {
+  const numeric = parseNumericValue(value, true);
+
+  if (!Number.isFinite(numeric)) {
+    return "0";
+  }
+
+  return numeric.toFixed(3).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
+}
+
 function normalizeData(data) {
   const base = defaultData();
   const safe = data && typeof data === "object" ? data : {};
@@ -28,8 +67,8 @@ function normalizeData(data) {
       category: pair.category || "cat1",
       stations: Array.isArray(pair.stations) && pair.stations.length
         ? pair.stations.map(station => ({
-            points: Number(station && station.points) || 0,
-            time: Number(station && station.time) || 0
+            points: parseNumericValue(station && station.points, false),
+            time: parseNumericValue(station && station.time, true)
           }))
         : Array.from({length: 12}, () => ({points: 0, time: 0}))
     }))
