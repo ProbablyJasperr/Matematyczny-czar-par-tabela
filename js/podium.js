@@ -36,7 +36,7 @@ function renderPodium(containerId, categoryKey) {
   const el = document.getElementById(containerId);
   const list = getTop(categoryKey);
   const medals = ["🥇", "🥈", "🥉"];
-  const heights = ["220px", "180px", "145px"];
+  const heights = ["170px", "140px", "110px"];
 
   if (!list.length) {
     el.innerHTML = `<div class="empty-card">Brak par w kategorii ${getCategoryName(categoryKey)}.</div>`;
