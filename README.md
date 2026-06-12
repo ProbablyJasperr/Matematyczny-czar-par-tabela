@@ -1,0 +1,1 @@
+# Matematyczny-czar-par-tabela
