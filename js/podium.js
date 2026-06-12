@@ -32,11 +32,19 @@ function getCategoryName(cat) {
   return data.categories?.[cat] || (cat === "cat1" ? "Klasy 4–5" : "Klasy 6–7");
 }
 
+function getPodiumHeight(pair, placeIndex) {
+  const r = calc(pair);
+  const rankBoost = placeIndex === 0 ? 170 : placeIndex === 1 ? 80 : 20;
+  const scoreBoost = Math.max(0, r.points) * 6;
+
+  const height = (rankBoost + scoreBoost + 140) * 2;
+  return `${Math.max(320, Math.min(1040, height))}px`;
+}
+
 function renderPodium(containerId, categoryKey) {
   const el = document.getElementById(containerId);
   const list = getTop(categoryKey);
   const medals = ["🥇", "🥈", "🥉"];
-  const heights = ["170px", "140px", "110px"];
 
   if (!list.length) {
     el.innerHTML = `<div class="empty-card">Brak par w kategorii ${getCategoryName(categoryKey)}.</div>`;
@@ -50,7 +58,7 @@ function renderPodium(containerId, categoryKey) {
     if (!pair) {
       return `
         <article class="podium-column ${placeClass}">
-          <div class="podium-riser" style="--podium-height:${heights[i]}">
+          <div class="podium-riser" style="--podium-height:150px">
             <div class="empty-card">Wolne miejsce</div>
           </div>
         </article>
@@ -58,11 +66,12 @@ function renderPodium(containerId, categoryKey) {
     }
 
     const r = calc(pair);
+    const height = getPodiumHeight(pair, i);
 
     return `
       <article class="podium-column ${placeClass}">
-        <div class="podium-riser" style="--podium-height:${heights[i]}">
-          <div class="podium-card ${placeClass}" style="--podium-height:${heights[i]}">
+        <div class="podium-riser" style="--podium-height:${height}">
+          <div class="podium-card ${placeClass}" style="--podium-height:${height}">
             <span class="medal">${medals[i]}</span>
             <h3>${pair.name}</h3>
             <p class="score">${r.points} pkt</p>

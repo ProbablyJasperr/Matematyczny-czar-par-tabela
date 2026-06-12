@@ -122,9 +122,11 @@ function renderBoards() {
 function syncCategoryInputs() {
   const cat1Input = document.getElementById("category-name-1");
   const cat2Input = document.getElementById("category-name-2");
+  const fullPointsInput = document.getElementById("full-points");
 
   if (cat1Input) cat1Input.value = data.categories.cat1 || "Klasy 4–5";
   if (cat2Input) cat2Input.value = data.categories.cat2 || "Klasy 6–7";
+  if (fullPointsInput) fullPointsInput.value = data.fullPoints || 100;
 }
 
 function escapeHtml(value) {
@@ -166,6 +168,17 @@ function updatePairField(id, field, value) {
 
   if (field === "name") pair.name = value;
   if (field === "category") pair.category = value;
+
+  saveData(data);
+  renderBoards();
+}
+
+function updateSettingsField(field, value) {
+  data = loadData();
+
+  if (field === "fullPoints") {
+    data.fullPoints = Math.max(1, parseNumericValue(value, false) || 100);
+  }
 
   saveData(data);
   renderBoards();
@@ -231,6 +244,10 @@ document.addEventListener("input", (event) => {
 
   if (target.matches("[data-role='station-time']")) {
     updateStationValue(Number(target.dataset.id), Number(target.dataset.index), "time", target.value);
+  }
+
+  if (target.matches("[data-role='full-points']")) {
+    updateSettingsField("fullPoints", target.value);
   }
 
 });

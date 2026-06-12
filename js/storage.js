@@ -6,7 +6,8 @@ function defaultData() {
     categories: {
       cat1: "Klasy 4–5",
       cat2: "Klasy 6–7"
-    }
+    },
+    fullPoints: 100
   };
 }
 
@@ -61,6 +62,7 @@ function normalizeData(data) {
       ...base.categories,
       ...(safe.categories || {})
     },
+    fullPoints: parseNumericValue(safe.fullPoints, false) || 100,
     pairs: pairs.map(pair => ({
       id: pair.id || Date.now() + Math.random(),
       name: pair.name || "Nowa para",
