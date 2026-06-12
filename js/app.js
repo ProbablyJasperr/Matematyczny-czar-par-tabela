@@ -87,8 +87,10 @@ function renderEditor() {
           ${(pair.stations || []).map((station, index) => `
             <label class="station-field">
               <span>Stacja ${index + 1}</span>
-              <input type="number" min="0" value="${station.points || 0}" data-role="station-points" data-id="${pair.id}" data-index="${index}">
-              <input type="number" min="0" value="${station.time || 0}" data-role="station-time" data-id="${pair.id}" data-index="${index}">
+              <div class="station-input-label">Punkty</div>
+              <input type="number" min="0" step="1" value="${station.points || 0}" data-role="station-points" data-id="${pair.id}" data-index="${index}" aria-label="Punkty dla stacji ${index + 1}">
+              <div class="station-input-label">Czas</div>
+              <input type="number" min="0" step="0.001" value="${station.time || 0}" data-role="station-time" data-id="${pair.id}" data-index="${index}" aria-label="Czas dla stacji ${index + 1} w sekundach">
             </label>
           `).join("")}
         </div>

@@ -159,7 +159,8 @@ input, select {
 .station-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
 .station-field { padding: 0.55rem; border-radius: 16px; background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(148, 163, 184, 0.15); }
 .station-field span { font-size: 0.8rem; color: #cbd5e1; }
-.station-field input { margin-top: 0.4rem; padding: 0.5rem; border-radius: 10px; }
+.station-field .station-input-label { font-size: 0.78rem; color: #bfdbfe; margin-top: 0.35rem; }
+.station-field input { margin-top: 0.15rem; padding: 0.5rem; border-radius: 10px; }
 
 .empty-state { color: #cbd5e1; font-style: italic; }
 
