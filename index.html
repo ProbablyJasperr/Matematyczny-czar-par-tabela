@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Matematyczny Czar Par</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header>
+  <img src="assets/logo.png" class="logo" onclick="goHome()">
+  <h1>Matematyczny Czar Par</h1>
+
+  <div class="buttons">
+    <button onclick="openPodium()">🖥 Podium</button>
+    <button onclick="exportBackup()">💾 Backup</button>
+    <button onclick="importBackup()">📥 Import</button>
+    <button class="danger" onclick="resetAll()">Reset</button>
+  </div>
+</header>
+
+<main>
+  <section id="controls">
+    <button onclick="addPair()">➕ Dodaj parę</button>
+  </section>
+
+  <section id="leaderboards">
+    <div class="board">
+      <h2>Klasy 4–5</h2>
+      <div id="board-1"></div>
+    </div>
+
+    <div class="board">
+      <h2>Klasy 6–7</h2>
+      <div id="board-2"></div>
+    </div>
+  </section>
+
+  <section id="pairs"></section>
+</main>
+
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

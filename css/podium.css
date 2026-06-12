@@ -1,0 +1,19 @@
+body {
+  background: black;
+  color: white;
+  text-align: center;
+  font-family: Arial;
+}
+
+.podiums {
+  display: flex;
+  justify-content: space-around;
+}
+
+.podium-card {
+  background: #111827;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  transition: 0.5s;
+}

@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background: #111827;
+}
+
+.logo {
+  width: 50px;
+  cursor: pointer;
+}
+
+button {
+  margin: 5px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.danger {
+  background: red;
+  color: white;
+}
+
+.board {
+  margin: 10px;
+  padding: 10px;
+  background: #1f2937;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  border-bottom: 1px solid #374151;
+}
