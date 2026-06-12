@@ -46,6 +46,25 @@
     </div>
   </section>
 
+  <section class="panel projector-panel">
+    <div class="panel-heading compact">
+      <div>
+        <p class="eyebrow">Projektor</p>
+        <h2>Skala podium</h2>
+      </div>
+      <span class="pill" id="podium-scale-chip">100%</span>
+    </div>
+
+    <div class="projector-control-grid">
+      <label class="projector-scale-label" for="podium-scale">Dopasuj widok podium do ekranu</label>
+      <div class="projector-scale-row">
+        <input id="podium-scale" type="range" min="0.75" max="1.6" step="0.05" value="1">
+        <strong id="podium-scale-value">100%</strong>
+      </div>
+      <p class="muted">Zmiana jest zapamiętywana i używana przy otwieraniu nowego podium. Możesz też zmienić skalę i od razu otworzyć ekran projektora.</p>
+    </div>
+  </section>
+
   <section id="leaderboards" class="leaderboard-grid">
     <article class="panel board-card">
       <div class="panel-heading compact">

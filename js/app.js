@@ -1,5 +1,7 @@
 let data = loadData();
 
+const PODIUM_SCALE_KEY = "mcp_podium_scale";
+
 function getCategoryLabel(key) {
   return data.categories?.[key] || (key === "cat1" ? "Klasy 4–5" : "Klasy 6–7");
 }
@@ -100,9 +102,32 @@ function renderEditor() {
   }).join("");
 }
 
+function getPodiumScale() {
+  const raw = Number(localStorage.getItem(PODIUM_SCALE_KEY));
+  if (!Number.isFinite(raw)) return 1;
+  return Math.min(1.6, Math.max(0.75, raw));
+}
+
+function setPodiumScale(value) {
+  const scale = Math.min(1.6, Math.max(0.75, Number(value) || 1));
+  localStorage.setItem(PODIUM_SCALE_KEY, String(scale));
+  return scale;
+}
+
+function refreshScaleControl(scale = getPodiumScale()) {
+  const slider = document.getElementById("podium-scale");
+  const value = document.getElementById("podium-scale-value");
+  const chip = document.getElementById("podium-scale-chip");
+
+  if (slider) slider.value = String(scale);
+  if (value) value.textContent = `${Math.round(scale * 100)}%`;
+  if (chip) chip.textContent = `${Math.round(scale * 100)}%`;
+}
+
 function render() {
   data = loadData();
   syncCategoryInputs();
+  refreshScaleControl();
   renderEditor();
   renderBoards();
 }
@@ -192,7 +217,8 @@ function resetAll() {
 }
 
 function openPodium() {
-  window.open("podium.html", "_blank");
+  const scale = setPodiumScale(getPodiumScale());
+  window.open(`podium.html?scale=${scale.toFixed(2)}`, "_blank");
 }
 
 document.addEventListener("input", (event) => {
@@ -212,6 +238,11 @@ document.addEventListener("input", (event) => {
 
   if (target.matches("[data-role='station-time']")) {
     updateStationValue(Number(target.dataset.id), Number(target.dataset.index), "time", target.value);
+  }
+
+  if (target.id === "podium-scale") {
+    const scale = setPodiumScale(target.value);
+    refreshScaleControl(scale);
   }
 });
 

@@ -32,6 +32,22 @@ function getCategoryName(cat) {
   return data.categories?.[cat] || (cat === "cat1" ? "Klasy 4–5" : "Klasy 6–7");
 }
 
+function getPodiumScale() {
+  const params = new URLSearchParams(window.location.search);
+  const paramValue = Number(params.get("scale"));
+  const storageValue = Number(localStorage.getItem("mcp_podium_scale"));
+  const raw = Number.isFinite(paramValue) ? paramValue : storageValue;
+
+  if (!Number.isFinite(raw)) return 1;
+  return Math.min(1.6, Math.max(0.75, raw));
+}
+
+function applyPodiumScale() {
+  const scale = getPodiumScale();
+  document.body.style.zoom = String(scale);
+  document.documentElement.style.setProperty("--podium-scale", String(scale));
+}
+
 function renderPodium(containerId, categoryKey) {
   const el = document.getElementById(containerId);
   const list = getTop(categoryKey);
@@ -75,11 +91,16 @@ function renderPodium(containerId, categoryKey) {
 }
 
 function update() {
+  applyPodiumScale();
   document.getElementById("category-title-1").textContent = getCategoryName("cat1");
   document.getElementById("category-title-2").textContent = getCategoryName("cat2");
   renderPodium("podium-1", "cat1");
   renderPodium("podium-2", "cat2");
 }
+
+window.addEventListener("storage", () => {
+  applyPodiumScale();
+});
 
 setInterval(update, 1000);
 update();

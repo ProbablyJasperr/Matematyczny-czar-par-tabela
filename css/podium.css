@@ -19,8 +19,9 @@ body::before {
   background:
     linear-gradient(rgba(15, 23, 42, 0.18), rgba(15, 23, 42, 0.18)),
     url("../assets/Mat-czarpar logo.png") center/cover no-repeat;
-  opacity: 0.10;
-  filter: blur(1.5px) saturate(1.1);
+  background-size: min(72vmin, 780px) auto;
+  opacity: 0.22;
+  filter: none;
   z-index: -2;
 }
 
