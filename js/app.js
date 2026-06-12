@@ -223,7 +223,6 @@ document.addEventListener("change", (event) => {
     data.categories[target.dataset.key] = target.value.trim() || (target.dataset.key === "cat1" ? "Klasy 4–5" : "Klasy 6–7");
     saveData(data);
     renderBoards();
-    renderEditor();
   }
 });
 
