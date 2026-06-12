@@ -40,6 +40,17 @@ body::after {
   margin: 0 auto;
 }
 
+.podium-shell {
+  padding-top: 0.5rem;
+}
+
+.podium-stage {
+  transform: scale(var(--podium-scale, 1));
+  transform-origin: top center;
+  width: calc(100% / var(--podium-scale, 1));
+  margin: 0 auto;
+}
+
 .hero-card {
   margin-top: 1rem;
   border-radius: 28px;

@@ -44,7 +44,6 @@ function getPodiumScale() {
 
 function applyPodiumScale() {
   const scale = getPodiumScale();
-  document.body.style.zoom = String(scale);
   document.documentElement.style.setProperty("--podium-scale", String(scale));
 }
 

@@ -91,9 +91,9 @@ function renderEditor() {
             <label class="station-field">
               <span>Stacja ${index + 1}</span>
               <div class="station-input-label">Punkty</div>
-              <input type="number" min="0" step="1" value="${station.points || 0}" data-role="station-points" data-id="${pair.id}" data-index="${index}" aria-label="Punkty dla stacji ${index + 1}">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" value="${station.points || 0}" data-role="station-points" data-id="${pair.id}" data-index="${index}" aria-label="Punkty dla stacji ${index + 1}">
               <div class="station-input-label">Czas</div>
-              <input type="number" min="0" step="0.001" value="${station.time || 0}" data-role="station-time" data-id="${pair.id}" data-index="${index}" aria-label="Czas dla stacji ${index + 1} w sekundach">
+              <input type="text" inputmode="decimal" pattern="[0-9,.]*" value="${station.time || 0}" data-role="station-time" data-id="${pair.id}" data-index="${index}" aria-label="Czas dla stacji ${index + 1} w sekundach">
             </label>
           `).join("")}
         </div>
@@ -196,6 +196,21 @@ function updatePairField(id, field, value) {
   renderBoards();
 }
 
+function normalizeNumericInput(value, allowDecimal) {
+  const cleaned = String(value ?? "")
+    .replace(/,/g, ".")
+    .replace(/[\D.-]/g, "");
+
+  if (!allowDecimal) return String(cleaned.replace(/\./g, ""));
+
+  const parts = cleaned.split(".");
+  if (parts.length > 2) {
+    return `${parts[0]}.${parts.slice(1).join("")}`;
+  }
+
+  return cleaned;
+}
+
 function updateStationValue(id, index, field, value) {
   data = loadData();
   const pair = data.pairs.find(item => item.id === id);
@@ -203,7 +218,9 @@ function updateStationValue(id, index, field, value) {
   if (!pair) return;
 
   if (!pair.stations[index]) pair.stations[index] = {points: 0, time: 0};
-  pair.stations[index][field] = Number(value || 0);
+
+  const rawValue = normalizeNumericInput(value, field === "time");
+  pair.stations[index][field] = field === "time" ? Number(rawValue || 0) : Number(rawValue || 0);
 
   saveData(data);
   renderBoards();
