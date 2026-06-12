@@ -3,25 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <title>Podium</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/podium.css">
 </head>
 <body>
 
-<h1>Matematyczny Czar Par</h1>
-
-<div class="podiums">
-
-  <div class="podium">
-    <h2>Klasy 4–5</h2>
-    <div id="podium-1"></div>
+<header class="hero-card">
+  <div>
+    <p class="eyebrow">Wyniki konkursu</p>
+    <h1>Podium i zwycięzcy</h1>
+    <p class="lead">Trzy miejsca na podium dla każdej kategorii, z aktualnymi wynikami i nazwami kategorii.</p>
   </div>
+</header>
 
-  <div class="podium">
-    <h2>Klasy 6–7</h2>
-    <div id="podium-2"></div>
-  </div>
+<main class="page-shell">
+  <section class="podium-section">
+    <article class="panel podium-card-panel">
+      <div class="panel-heading compact">
+        <div>
+          <p class="eyebrow">Kategoria</p>
+          <h2 id="category-title-1">Klasy 4–5</h2>
+        </div>
+        <span class="pill">Top 3</span>
+      </div>
+      <div id="podium-1" class="podium-grid three-columns"></div>
+    </article>
 
-</div>
+    <article class="panel podium-card-panel">
+      <div class="panel-heading compact">
+        <div>
+          <p class="eyebrow">Kategoria</p>
+          <h2 id="category-title-2">Klasy 6–7</h2>
+        </div>
+        <span class="pill">Top 3</span>
+      </div>
+      <div id="podium-2" class="podium-grid three-columns"></div>
+    </article>
+  </section>
+</main>
 
 <script src="js/storage.js"></script>
 <script src="js/podium.js"></script>

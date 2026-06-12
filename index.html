@@ -3,15 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>Matematyczny Czar Par</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-<header>
-  <img src="assets/logo.png" class="logo" onclick="goHome()">
-  <h1>Matematyczny Czar Par</h1>
+<header class="hero-card">
+  <div>
+    <p class="eyebrow">Panel sterowania i rankingów</p>
+    <h1>Matematyczny Czar Par</h1>
+    <p class="lead">Edytuj zespoły, punkty, czasy i kategorie. Zmiany są widoczne od razu na podium i rankingach.</p>
+  </div>
 
-  <div class="buttons">
+  <div class="button-row">
     <button onclick="openPodium()">🖥 Podium</button>
     <button onclick="exportBackup()">💾 Backup</button>
     <button onclick="importBackup()">📥 Import</button>
@@ -19,24 +23,63 @@
   </div>
 </header>
 
-<main>
-  <section id="controls">
-    <button onclick="addPair()">➕ Dodaj parę</button>
-  </section>
-
-  <section id="leaderboards">
-    <div class="board">
-      <h2>Klasy 4–5</h2>
-      <div id="board-1"></div>
+<main class="page-shell">
+  <section class="panel">
+    <div class="panel-heading">
+      <div>
+        <p class="eyebrow">Ustawienia</p>
+        <h2>Nazwy kategorii</h2>
+      </div>
+      <button onclick="addPair()">➕ Dodaj parę</button>
     </div>
 
-    <div class="board">
-      <h2>Klasy 6–7</h2>
-      <div id="board-2"></div>
+    <div class="category-grid">
+      <label>
+        <span>4–5 klas</span>
+        <input id="category-name-1" type="text" data-role="category-name" data-key="cat1" placeholder="Klasy 4–5">
+      </label>
+      <label>
+        <span>6–7 klas</span>
+        <input id="category-name-2" type="text" data-role="category-name" data-key="cat2" placeholder="Klasy 6–7">
+      </label>
     </div>
   </section>
 
-  <section id="pairs"></section>
+  <section id="leaderboards" class="leaderboard-grid">
+    <article class="panel board-card">
+      <div class="panel-heading compact">
+        <div>
+          <p class="eyebrow">Ranking</p>
+          <h2 id="summary-1">Klasy 4–5</h2>
+        </div>
+        <span class="pill">Wszystkie pary</span>
+      </div>
+      <div id="board-1" class="board-list"></div>
+    </article>
+
+    <article class="panel board-card">
+      <div class="panel-heading compact">
+        <div>
+          <p class="eyebrow">Ranking</p>
+          <h2 id="summary-2">Klasy 6–7</h2>
+        </div>
+        <span class="pill">Wszystkie pary</span>
+      </div>
+      <div id="board-2" class="board-list"></div>
+    </article>
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading">
+      <div>
+        <p class="eyebrow">Edycja danych</p>
+        <h2>Pary i punkty</h2>
+      </div>
+      <p class="muted">Zmieniaj nazwy, kategorię, punkty i czasy stacji – panel odświeża się na żywo.</p>
+    </div>
+
+    <div id="pairs" class="pairs-grid"></div>
+  </section>
 </main>
 
 <script src="js/storage.js"></script>

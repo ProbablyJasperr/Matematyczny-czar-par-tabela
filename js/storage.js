@@ -1,7 +1,7 @@
 const STORAGE_KEY = "mcp_data";
 
-function loadData() {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+function defaultData() {
+  return {
     pairs: [],
     categories: {
       cat1: "Klasy 4–5",
@@ -10,9 +10,45 @@ function loadData() {
   };
 }
 
+function normalizeData(data) {
+  const base = defaultData();
+  const safe = data && typeof data === "object" ? data : {};
+  const pairs = Array.isArray(safe.pairs) ? safe.pairs : [];
+
+  return {
+    ...base,
+    ...safe,
+    categories: {
+      ...base.categories,
+      ...(safe.categories || {})
+    },
+    pairs: pairs.map(pair => ({
+      id: pair.id || Date.now() + Math.random(),
+      name: pair.name || "Nowa para",
+      category: pair.category || "cat1",
+      stations: Array.isArray(pair.stations) && pair.stations.length
+        ? pair.stations.map(station => ({
+            points: Number(station && station.points) || 0,
+            time: Number(station && station.time) || 0
+          }))
+        : Array.from({length: 12}, () => ({points: 0, time: 0}))
+    }))
+  };
+}
+
+function loadData() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    return normalizeData(raw);
+  } catch (error) {
+    return defaultData();
+  }
+}
+
 function saveData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  localStorage.setItem("mcp_backup", JSON.stringify(data)); // emergency backup
+  const safeData = normalizeData(data);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(safeData));
+  localStorage.setItem("mcp_backup", JSON.stringify(safeData));
 }
 
 function exportBackup() {
